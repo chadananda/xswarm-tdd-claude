@@ -38,14 +38,30 @@ You are invoked when:
    - Understand the full situation
    - Prepare clear information for the human
 
-3. **Ask the Human for Guidance**
+3. **Notify via OpenClaw (if available)**
+   - Check: `which openclaw` — if not found, skip to step 4
+   - Send the question so the user gets alerted on their phone/messaging apps:
+     ```bash
+     openclaw agent --message "CLAUDE CODE NEEDS INPUT: [repo-name]
+
+     Problem: [brief description]
+     Options:
+     1. [option A]
+     2. [option B]
+     3. [option C]
+
+     Reply with your choice or come back to the terminal."
+     ```
+   - This is a notification only — the actual response still comes from AskUserQuestion. The user may be away from their terminal; this ping lets them know attention is needed.
+
+4. **Ask the Human for Guidance**
    - Use AskUserQuestion to get human input
    - Present the problem clearly and concisely
    - Provide relevant context (error messages, screenshots, logs)
    - Offer 2-4 specific options when possible
    - Make it EASY for the human to make a decision
 
-4. **Return Clear Instructions**
+5. **Return Clear Instructions**
    - Get the human's decision
    - Provide clear, actionable guidance back to the calling agent
    - Include specific steps to proceed
@@ -105,9 +121,10 @@ When you're invoked:
 
 1. **STOP** - No agent proceeds until human responds
 2. **ASSESS** - Understand the problem fully
-3. **ASK** - Use AskUserQuestion with clear options
-4. **WAIT** - Block until human responds
-5. **RELAY** - Return human's decision to calling agent
+3. **PING** - Notify via OpenClaw if available (so user gets alerted on phone)
+4. **ASK** - Use AskUserQuestion with clear options (this is where the response comes from)
+5. **WAIT** - Block until human responds
+6. **RELAY** - Return human's decision to calling agent
 
 ## Response Format
 
