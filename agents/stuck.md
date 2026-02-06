@@ -38,31 +38,32 @@ You are invoked when:
    - Understand the full situation
    - Prepare clear information for the human
 
-3. **Notify via OpenClaw (if available)**
-   - Check: `which openclaw` — if not found, skip to step 4
-   - Send the question so the user gets alerted on their phone/messaging apps:
-     ```bash
-     openclaw agent --message "CLAUDE CODE NEEDS INPUT: [repo-name]
+3. **Ask the Human (OpenClaw first, terminal fallback)**
 
-     Problem: [brief description]
-     Options:
-     1. [option A]
-     2. [option B]
-     3. [option C]
+   **Try OpenClaw** — it's a local CLI on the same machine. If available, the question goes through the user's messaging channels and the response comes back to stdout. No webhooks, no remote calls.
+   ```bash
+   # Check if OpenClaw is installed locally
+   if which openclaw > /dev/null 2>&1; then
+     RESPONSE=$(openclaw agent --message "CLAUDE CODE NEEDS YOUR INPUT
 
-     Reply with your choice or come back to the terminal."
-     ```
-   - This is a notification only — the actual response still comes from AskUserQuestion. The user may be away from their terminal; this ping lets them know attention is needed.
+   Project: [repo-name]
+   Problem: [brief description]
 
-4. **Ask the Human for Guidance**
-   - Use AskUserQuestion to get human input
-   - Present the problem clearly and concisely
-   - Provide relevant context (error messages, screenshots, logs)
-   - Offer 2-4 specific options when possible
-   - Make it EASY for the human to make a decision
+   Options:
+   1. [option A] — [explanation]
+   2. [option B] — [explanation]
+   3. [option C] — [explanation]
 
-5. **Return Clear Instructions**
-   - Get the human's decision
+   Reply with a number or your own answer.")
+   fi
+   ```
+   - If OpenClaw returns a response, use it — skip AskUserQuestion entirely.
+   - If OpenClaw is not installed or the command fails, fall back to AskUserQuestion in the terminal.
+
+   **Fallback: AskUserQuestion** — standard terminal prompt with options. Used when OpenClaw is not available or when the user is at the keyboard.
+
+4. **Return Clear Instructions**
+   - Get the human's decision (from whichever channel delivered it)
    - Provide clear, actionable guidance back to the calling agent
    - Include specific steps to proceed
    - Ensure the solution is implementable
@@ -121,10 +122,9 @@ When you're invoked:
 
 1. **STOP** - No agent proceeds until human responds
 2. **ASSESS** - Understand the problem fully
-3. **PING** - Notify via OpenClaw if available (so user gets alerted on phone)
-4. **ASK** - Use AskUserQuestion with clear options (this is where the response comes from)
-5. **WAIT** - Block until human responds
-6. **RELAY** - Return human's decision to calling agent
+3. **ASK** - Try OpenClaw first (two-way: question out, answer back via messaging); fall back to AskUserQuestion if unavailable
+4. **WAIT** - Block until human responds (via phone or terminal)
+5. **RELAY** - Return human's decision to calling agent
 
 ## Response Format
 

@@ -99,40 +99,57 @@ This skill is designed to support additional assistants. To add a new one:
 2. Add a send method (CLI command, API call, or WebSocket message)
 3. Follow the same structured message format
 
-Potential future targets: custom webhooks, Slack bots, ntfy.sh, Home Assistant.
+Potential future targets: ntfy.sh, Home Assistant, custom local services.
 
-## Remote Question Routing (Stuck Agent Integration)
+## Two-Way Question Routing (Stuck Agent Integration)
 
-The most powerful use of this skill is surfacing stuck agent questions to OpenClaw so you can answer from your phone while Claude works unattended. This turns "blocked waiting at terminal" into "pinged on WhatsApp."
+The most powerful use of this skill is full round-trip communication: the stuck agent sends a question through OpenClaw to whatever messaging app you're on (WhatsApp, Telegram, Slack, etc.), you reply from your phone, and the answer flows back to Claude Code to unblock the pipeline. You never need to be at the terminal.
 
 ### How It Works
 
-When the stuck agent fires, it can notify OpenClaw *before* blocking in the terminal:
+```
+Claude Code (stuck)                    OpenClaw                         You (on phone)
+      |                                   |                                  |
+      |-- openclaw agent --message ------>|                                  |
+      |   "QUESTION: which DB?"           |-- forwards to WhatsApp --------->|
+      |                                   |                                  |
+      |                                   |<-- "Use PostgreSQL" -------------|
+      |<-- returns answer to stdout ------|                                  |
+      |                                   |                                  |
+      | (captures response, unblocks)     |                                  |
+```
 
-1. **Stuck agent detects a problem** and prepares the question
-2. **Stuck agent checks for OpenClaw** via `which openclaw`
-3. **If found, sends the question** as a high-priority notification:
+1. **Stuck agent detects a problem** and formats the question with options
+2. **Checks for OpenClaw:** `which openclaw` — if not found, falls back to terminal AskUserQuestion
+3. **Sends question and waits for response:**
    ```bash
-   openclaw agent --message "CLAUDE CODE NEEDS INPUT: [repo-name]
+   RESPONSE=$(openclaw agent --message "CLAUDE CODE NEEDS YOUR INPUT
 
+   Project: [repo-name]
    Problem: [brief description]
-   Options:
-   1. [option A]
-   2. [option B]
-   3. [option C]
 
-   Reply with your choice or come back to the terminal."
+   Options:
+   1. [option A] — [explanation]
+   2. [option B] — [explanation]
+   3. [option C] — [explanation]
+
+   Reply with a number or your own answer.")
    ```
-4. **Stuck agent also blocks in terminal** via AskUserQuestion as usual
-5. **User responds** from whichever is more convenient --- phone or terminal
+4. **OpenClaw relays** the question to the user's preferred messaging channel
+5. **User replies** from their phone (e.g., "2" or "Use PostgreSQL")
+6. **OpenClaw returns** the user's response to stdout
+7. **Stuck agent captures** the response and relays it back to the calling agent
+8. **Pipeline unblocks** — no terminal interaction needed
 
 ### Message Format for Questions
 
 ```
-CLAUDE CODE NEEDS INPUT: [repo-name]
+CLAUDE CODE NEEDS YOUR INPUT
 
+Project: [repo-name]
 Problem: [1-2 sentence description]
 Context: [error message or key detail]
+
 Options:
 1. [option] — [brief explanation]
 2. [option] — [brief explanation]
@@ -141,10 +158,14 @@ Options:
 Reply with a number or your own answer.
 ```
 
-### Limitations
+### Fallback Chain
 
-- Currently one-way notification: OpenClaw alerts you, but the response still comes through the terminal's AskUserQuestion. Full round-trip (answer via messaging app, response flows back to Claude Code) requires OpenClaw webhook/callback support --- a future enhancement.
-- If OpenClaw is not running, the stuck agent falls back silently to terminal-only mode.
+If OpenClaw is unavailable or the command fails, the stuck agent falls back gracefully:
+
+1. **Try OpenClaw** — `openclaw agent --message` (two-way, works remotely)
+2. **Fall back to terminal** — AskUserQuestion (requires user at keyboard)
+
+This means the system works whether or not OpenClaw is installed. OpenClaw just makes it work *remotely*.
 
 ## Rules
 
@@ -152,4 +173,4 @@ Reply with a number or your own answer.
 - **Skip silently if no assistant is detected.** Not everyone has OpenClaw installed; failing loudly would be annoying noise.
 - **Keep messages factual and structured.** The receiving assistant needs parseable information, not conversational filler.
 - **Never include secrets, tokens, or credentials in notifications.** Messages may traverse external channels; treat them as potentially public.
-- **Always still block in terminal via AskUserQuestion.** OpenClaw notification is an alert, not a replacement for the terminal response path. The pipeline must not proceed without a confirmed human decision.
+- **Fall back to AskUserQuestion if OpenClaw is unavailable.** The pipeline must not proceed without a confirmed human decision, regardless of which channel delivers it.
