@@ -182,6 +182,7 @@ Each agent invocation gets a *fresh* context with TDD loaded at high priority. T
     |
     |-- [Development Workflow]
     |   |-- plan/                 # Requirements + task decomposition
+    |   |-- bdd-playwright/       # Gherkin + ARIA locators + axe-core a11y
     |   |-- systematic-debugging/ # 4-phase root cause analysis (Superpowers)
     |   |-- using-git-worktrees/  # Parallel branch isolation (Superpowers)
     |   |-- property-based-testing/ # Hypothesis/QuickCheck (Trail of Bits)
@@ -214,7 +215,7 @@ Skills only wake up when they're needed. Claude scans each skill's description (
 
 | Category | Skills | When They Wake Up |
 |----------|--------|-------------------|
-| **Coding workflow** | systematic-debugging, git-worktrees, property-based-testing, security-scan | Bugs, branch work, test writing, pre-commit |
+| **Coding workflow** | bdd-playwright, systematic-debugging, git-worktrees, property-based-testing, security-scan | BDD/E2E tests, bugs, branch work, test writing, pre-commit |
 | **Language-specific** | modern-python, frontend-design, web-artifacts-builder | Only their language/framework |
 | **Document formats** | docx, pdf, pptx, xlsx, doc-coauthoring | Only when touching those formats |
 | **Meta/tooling** | plan, skill-creator, agent-builder, etc. | Rare, specific triggers |

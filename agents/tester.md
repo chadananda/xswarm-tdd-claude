@@ -67,7 +67,26 @@ Used when team-lead specifies web or TUI project type.
 3. Execute each test scenario (fill forms, click buttons)
 4. Take screenshot after each interaction
 5. Verify: elements visible, layout correct, no console errors
-6. Report with screenshot evidence
+6. **Run accessibility audit** via `@axe-core/playwright` (WCAG 2.1 AA)
+7. Report with screenshot evidence + a11y results
+
+### Accessibility Audit (Web Projects — Mandatory)
+
+Run axe-core on every page/state tested:
+```bash
+# If project has @axe-core/playwright installed:
+npx playwright test --grep "accessibility"
+```
+
+If no dedicated a11y tests exist, flag this in the report and recommend adding:
+- `@axe-core/playwright` dependency
+- Shared step: `Then the page should have no accessibility violations`
+- WCAG 2.1 AA tags: `wcag2a`, `wcag2aa`
+
+Also verify Playwright tests use ARIA-first locators:
+- `getByRole()` with `{ name }` as primary locator
+- `getByLabel()` for form inputs
+- Flag any XPath, deep CSS, or `.nth()` selectors
 
 ### For TUI Projects (VHS)
 

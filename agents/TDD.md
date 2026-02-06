@@ -28,6 +28,15 @@
 - Structure test bodies: `// given` → `// when` → `// then`
 - One logical assertion per test; tests must be independent and deterministic
 
+### Web Projects: Gherkin + Playwright
+
+For web projects, use Gherkin feature files with Playwright step definitions:
+- Feature files describe user behavior in business language
+- Step definitions use ARIA-first locators (`getByRole`, `getByLabel`, `getByText`)
+- Never use XPath, deep CSS, or class-name selectors in step definitions
+- Every scenario includes an accessibility assertion (axe-core WCAG 2.1 AA)
+- See `bdd-playwright` skill for full patterns and examples
+
 ## Workflow
 
 1. Restate requirement → identify smallest testable increments

@@ -43,6 +43,30 @@ Read all files and check for:
 - File count >3 for single feature -> consolidate
 - Premature optimization -> flag unnecessary complexity
 
+## Phase 1.5: Test Quality Review (Web Projects)
+
+If the task includes Playwright tests, step definitions, or E2E tests, review them for:
+
+**Selector Quality (HIGH PRIORITY):**
+- `getByRole()` with accessible name should be the default locator
+- `getByLabel()` for form inputs
+- `getByText()` for visible content assertions
+- Flag and fix: XPath selectors, deep CSS chains, `.nth-child`, CSS class locators
+- Flag and fix: `getByTestId()` without corresponding ARIA attributes
+- Flag and fix: `getByRole('button').first()` without `{ name }` — ambiguous
+- Flag and fix: `page.waitForTimeout()` — use Playwright auto-wait instead
+
+**Accessibility:**
+- Every web scenario should include an axe-core accessibility assertion
+- Check for `@axe-core/playwright` integration
+- Verify WCAG 2.1 AA tags are used (`wcag2a`, `wcag2aa`)
+
+**BDD/Gherkin:**
+- Feature steps should reference elements by visible label, not selectors
+- Scenarios should describe user behavior, not implementation
+- One logical assertion per Then step
+- Background for shared preconditions
+
 ## Phase 2: Apply Fixes
 
 For each issue found, apply the fix directly:
