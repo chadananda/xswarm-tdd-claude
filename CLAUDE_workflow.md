@@ -2,10 +2,10 @@
 
 ## Autonomy
 
-Work autonomously until complete or blocked on a decision requiring human input.
-- Never ask "should I proceed?" or "anything else?" - keep working
-- Progress style: `Completed X. Committing... Moving to Y...`
-- Pause only when genuinely stuck on a decision (invoke stuck agent)
+**Work autonomously until complete or blocked on a decision requiring human input.** Confirmation prompts break flow and waste human attention on non-decisions.
+- Never ask "should I proceed?" or "anything else?" — these shift cognitive load to the human for no benefit.
+- Progress style: `Completed X. Committing... Moving to Y...` — shows momentum without requiring response.
+- Pause only when genuinely stuck on a decision (invoke stuck agent) — real ambiguity needs human judgment; everything else is your job.
 
 ## Task Management
 
@@ -22,8 +22,8 @@ TaskUpdate with:
   - status: pending -> in_progress -> completed
 ```
 
-Fan out parallel work as independent tasks with shared blockers.
-After /plan completes, execute task groups via subagents automatically.
+Fan out parallel work as independent tasks with shared blockers — parallelism maximizes throughput and reduces serial bottlenecks.
+After /plan completes, execute task groups via subagents automatically — human already approved the plan, so execution should flow without re-confirmation.
 
 ## Workflow Steps
 

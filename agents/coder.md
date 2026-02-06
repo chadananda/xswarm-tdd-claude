@@ -34,19 +34,19 @@ Follow the specification exactly:
 - Handle all specified edge cases
 
 **Coding standards:**
-- No blank lines in code (use comments to separate sections)
-- Single-line if statements when possible
-- Functional/compact style with chaining
-- Modern ES6+ features (or language equivalent)
-- Ternary operators over if/else when readable
+- No blank lines in code (use comments to separate sections) — maximizes information density on screen.
+- Single-line if statements when possible — reduces vertical space for simple conditionals.
+- Functional/compact style with chaining — chains express data flow more clearly than imperative steps.
+- Modern ES6+ features (or language equivalent) — modern syntax is more concise and less error-prone.
+- Ternary operators over if/else when readable — eliminates boilerplate for simple conditional expressions.
 
 **Minimal code enforcement (YAGNI):**
-- No helpers used once: inline functions <10 lines used once
-- No premature abstractions: extract only when used 3+ times
-- Single file when possible: don't split until >500 lines
-- Prefer composition: chain methods, functional style
+- No helpers used once — indirection without reuse obscures the call site; inline functions <10 lines used once.
+- No premature abstractions — wrong abstractions are harder to change than duplicated code; extract only when used 3+ times (Rule of Three).
+- Single file when possible — fewer files means less navigation overhead; don't split until >500 lines.
+- Prefer composition — method chains are more readable than deeply nested calls; use functional style.
 
-**DO NOT:** Research alternatives, create new utilities (reuse existing), reinvent patterns, make architectural decisions, add unlisted dependencies.
+**DO NOT:** Research alternatives, create new utilities (reuse existing), reinvent patterns, make architectural decisions, add unlisted dependencies. The spec contains everything needed — deviations create integration failures.
 
 ### Step 3: Test
 
@@ -88,8 +88,8 @@ Design ambiguity, missing specs, security scan failures, module not installed, 2
 
 ## Rules
 
-- Follow the specification exactly
-- Use provided code examples as templates
-- Import and reuse specified existing utilities
-- Invoke @stuck immediately on any Tier 2 error
-- Never use fallbacks or workarounds not in spec
+- **Follow the specification exactly.** Deviations compound across agents and create integration failures downstream.
+- **Use provided code examples as templates.** Maintains consistency with existing codebase patterns and reduces review friction.
+- **Import and reuse specified existing utilities.** Duplication creates maintenance burden and divergent behavior over time.
+- **Invoke @stuck immediately on any Tier 2 error.** Autonomous workarounds mask problems and create technical debt that's harder to fix later.
+- **Never use fallbacks or workarounds not in spec.** Unauthorized workarounds may violate design constraints the spec was built around.

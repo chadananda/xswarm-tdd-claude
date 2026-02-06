@@ -2,7 +2,7 @@
 
 ## Root = Config Only
 
-README.md, LICENSE, .gitignore, package.json, pyproject.toml, Cargo.toml, tsconfig.json, docker-compose.yml, Makefile, .env.example, dotfiles, lock files.
+Only config files belong at the project root (README.md, LICENSE, .gitignore, package.json, pyproject.toml, Cargo.toml, tsconfig.json, docker-compose.yml, Makefile, .env.example, dotfiles, lock files). A cluttered root makes it hard to find what matters and signals a disorganized project.
 
 ## Directory Structure
 
@@ -14,6 +14,6 @@ README.md, LICENSE, .gitignore, package.json, pyproject.toml, Cargo.toml, tsconf
 
 ## Git Discipline
 
-- Commit after every completed task group
-- Never commit `tmp/` or `.claude/context/`
-- Use `./tmp/` never `~/tmp`
+- **Commit after every completed task group.** Small, frequent commits create rollback points and keep diffs reviewable.
+- **Never commit `tmp/` or `.claude/context/`.** Temporary artifacts pollute history and bloat the repo.
+- **Use `./tmp/` never `~/tmp`.** Project-scoped temp directories prevent cross-project contamination and clean up naturally.

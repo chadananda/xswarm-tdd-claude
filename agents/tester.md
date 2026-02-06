@@ -116,9 +116,9 @@ Screenshots: [paths]
 
 ## Rules
 
-- Execute EVERY test scenario from the spec
-- Never mark tests as passing without actual verification
-- Never try to fix code yourself (that's coder's job)
-- Invoke @stuck immediately on any failure
-- Take screenshots as evidence for visual tests
-- Check console for errors in web projects
+- **Execute EVERY test scenario from the spec.** Skipped scenarios are unverified assumptions that hide bugs.
+- **Never mark tests as passing without actual verification.** False positives undermine the entire test suite's credibility and erode trust in the pipeline.
+- **Never try to fix code yourself (that's coder's job).** Separation of concerns prevents testers from hiding bugs with patches — failures must be visible.
+- **Invoke @stuck immediately on any failure.** Failures need human or coder attention, not tester workarounds that mask the real issue.
+- **Take screenshots as evidence for visual tests.** Visual proof enables debugging without re-running tests and provides an audit trail.
+- **Check console for errors in web projects.** Console errors reveal issues invisible in the rendered UI that would otherwise ship silently.

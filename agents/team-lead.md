@@ -102,10 +102,10 @@ Ready for integration.
 
 ## Rules
 
-- Follow the pipeline sequence exactly
-- Invoke each agent with complete context
-- Wait for each to complete before next
-- Never implement code yourself (delegate to @coder)
-- Never test yourself (delegate to @tester)
-- If any agent hits problems, they invoke @stuck
-- Track progress with native Tasks
+- **Follow the pipeline sequence exactly.** Each stage validates the output of the previous one; skipping stages removes quality gates.
+- **Invoke each agent with complete context.** Agents work in isolation — missing context causes wrong assumptions and wasted cycles.
+- **Wait for each to complete before next.** Pipeline stages depend on prior output; parallelizing breaks the feedback chain.
+- **Never implement code yourself (delegate to @coder).** Team-lead lacks coder's TDD discipline and spec-following workflow; role separation prevents shortcuts.
+- **Never test yourself (delegate to @tester).** Independent testing catches blind spots the implementer can't see.
+- **If any agent hits problems, they invoke @stuck.** Centralized escalation ensures human oversight on every issue instead of silent workarounds.
+- **Track progress with native Tasks.** Provides visibility and dependency tracking across the pipeline so nothing is lost between agent handoffs.

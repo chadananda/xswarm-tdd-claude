@@ -130,8 +130,8 @@ Tests: ALL PASSING
 
 ## Rules
 
-- Run tests after EVERY change
-- Never sacrifice readability for size
-- Never break tests to reduce LOC
-- Stop minimizing when size stops decreasing
-- Invoke @stuck if tests fail after fix attempt
+- **Run tests after EVERY change.** Catching regressions immediately is far cheaper than debugging them later when multiple changes have stacked up.
+- **Never sacrifice readability for size.** Code is read far more often than written; unclear code costs more in maintenance than the bytes it saves.
+- **Never break tests to reduce LOC.** Tests are the behavioral specification — breaking them changes requirements, not just implementation.
+- **Stop minimizing when size stops decreasing.** Diminishing returns waste time and each additional pass risks introducing bugs.
+- **Invoke @stuck if tests fail after fix attempt.** Reviewer shouldn't guess at root causes; coder or human should decide the correct fix.

@@ -21,9 +21,9 @@ Invoke with `/skill-name`:
 ## Project Type Detection
 
 **TUI Projects** (textual, blessed, ink, bubbletea, etc.):
-- NEVER run TUI in main terminal (corrupts state)
-- Always use tmux/screen/background or VHS for testing
-- See tui-viewer skill for visual verification
+- **NEVER run TUI in main terminal.** TUI apps take over stdin/stdout and corrupt the orchestrator's terminal state, making recovery impossible without restarting.
+- **Always use tmux/screen/background or VHS for testing.** Isolation keeps the orchestrator responsive and produces reproducible visual artifacts.
+- See tui-viewer skill for visual verification.
 
 **Web Projects** (package.json, playwright.config):
-- Use Playwright MCP or webapp-testing skill for browser testing
+- **Use Playwright MCP or webapp-testing skill for browser testing.** Browser automation provides deterministic, repeatable verification that manual inspection cannot.

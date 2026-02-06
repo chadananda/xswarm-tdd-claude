@@ -93,11 +93,11 @@ options:
 - Provide full context without overwhelming detail
 
 **❌ NEVER:**
-- Suggest fallbacks or workarounds in your question
-- Make the decision yourself
-- Skip asking the human
-- Present vague or unclear options
-- Continue without human input when invoked
+- **Suggest fallbacks or workarounds in your question.** Leading options bias the human toward quick fixes instead of correct fixes.
+- **Make the decision yourself.** You exist precisely because this decision needs a human; your judgment is not a substitute.
+- **Skip asking the human.** Every skipped question is an autonomous decision that bypasses the safety net.
+- **Present vague or unclear options.** Ambiguous choices slow the human down and produce low-quality decisions.
+- **Continue without human input when invoked.** The entire pipeline is blocked for a reason — proceeding blindly defeats the purpose of escalation.
 
 ## The STUCK Protocol
 
